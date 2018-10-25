@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--定义了提供方应用信息，用于计算依赖关系；在 dubbo-admin 或 dubbo-monitor 会显示这个名字，方便辨识-->
+    <!--dubbo:application标签用于配置当前应用消息,不管是消费方还是服务方
+        owner :应用配置者
+        organization:机构-->
+    <dubbo:application name="weather-provider" owner="zongye" organization="zongye"/>
+
+
+    <!--使用 multicast 注册中心暴露服务-->
+    <!--dubbo:registry用于配置连接注册中心的相关信息-->
+    <!--监控中心协议，如果为protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心-->
+    <dubbo:registry address="zookeeper://192.168.64.132:2181" timeout="20000"/>
+
+
+    <!--使用zookeeper集群作为dubbo的注册中心-->
+    <!--<dubbo:registry address="zookeeper://192.168.64.132:3001?backup=192.168.64.132:4001,192.168.64.132:5001" timeout="20000"/>-->
+
+    <!--dubbo:monitor标签用于连接监控中心的相关信息-->
+
+   <!-- <dubbo:monitor protocol="registry"/>-->
+        <dubbo:monitor address="192.168.64.132:7070"/>
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <!--dubbo:protocol标签用于配置服务的协议信息,协议由服务方决定,消费方被动接受
+          threads  :服务线程池大小
+          executes :如果提供者服务处理的并发请求数达到最大池数，则新调用将等待，
+                    然后消费者调用可能会捕获超时错误。配置 dubbo:method（方法级别配置），
+                    然后是method.Configurated dubbo:service（服务级别配置）中的并发限制点，
+                    然后是服务的并发限制点。-->
+    <dubbo:protocol name="dubbo" port="20882"/>
+
+    <!--样例-->
+  <!--  <dubbo:protocol name="dubbo" port="20882" threads="200" />
+    <dubbo:service interface="com.alibaba.hello.api.HelloService" version="1.0.0" ref="helloService"
+                   executes="200" >
+        <dubbo:method name="findAllPerson" executes="50" />
+    </dubbo:service>-->
+
+
+    <!--设置dubbo的缓存文件-->
+    <!--<dubbo:registry file="${user.home}/output/dubbo.cache"/>-->
+
+
+
+
+    <!--使用 dubbo 协议实现定义好的 UserService 接口
+        loadbalance:是指定负载均衡的策略,也可以直接指定具体的方法上 <dubbo:method name=”queryById” loadbalance=”random”>
+        timeout    :访问接口以及方法的超时时间
+        retries    :dubbo的容灾模式 retries="2"当出现失败时重试其他服务器
+        cluster    :默认的容灾模式
+        retry      :重试失败次数，默认值为1
+        actives    :消费者方面，最大并发呼叫限制  当消费者服务的并发请求达到最大配置时，新调用将等待直到捕获超时错误。
+                                                配置 dubbo:method（方法级别配置），然后是method.Configurated dubbo:service（服务级别配置）
+                                                中的并发限制点，然后是服务的并发限制点
+        owner      :服务配置所有者
+        -->
+    <!--dubbo:service标签表示暴露一个服务,一个服务也可以多个协议暴露,一个服务也可以注册到多个注册中心-->
+    <dubbo:service owner="zongye" interface="com.zy.cn.service.WeatherService" ref="weatherService" loadbalance="roundrobin"  timeout="20000"/>
+    <!--<dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService"
+                   loadbalance="roundrobin"
+                   cluster="failover"
+                   timeout="20000"
+                   retry="2"
+                   actives="5"/>-->
+
+
+    <!--<dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService">
+        &lt;!&ndash;指定固定的方法负载均衡&ndash;&gt;
+        <dubbo:method name="queryStaff" loadbalance="roundrobin"/>
+    </dubbo:service>-->
+
+
+
+
+    <dubbo:service interface="com.zy.cn.service.UserService" ref="userService" loadbalance="roundrobin"  timeout="20000"/>
+
+
+
+
+
+
+
+
+
+
+
+
+</beans>
