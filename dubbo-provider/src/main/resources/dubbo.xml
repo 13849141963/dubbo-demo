@@ -38,7 +38,7 @@
         -->
     <!--dubbo:service标签表示暴露一个服务,一个服务也可以多个协议暴露,一个服务也可以注册到多个注册中心-->
 
-    <dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService" loadbalance="roundrobin"  timeout="20000"/>
+    <dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService"   timeout="20000"/>
     <!--<dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService"
                    loadbalance="roundrobin"
                    cluster="failover"
@@ -50,7 +50,7 @@
     </dubbo:service>-->
 
 
-    <dubbo:service interface="com.zy.cn.service.UserService" ref="userService" loadbalance="roundrobin"  timeout="20000"/>
+    <dubbo:service interface="com.zy.cn.service.UserService" ref="userService"  timeout="20000"/>
 
 
 
