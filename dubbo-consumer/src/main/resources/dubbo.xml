@@ -14,7 +14,7 @@
 
 
 
-    <!--接口引用-->
+    <!--接口引用   dubbo只支持客户端的负载均衡-->
     <dubbo:reference id="userService" check="false" interface="com.zy.cn.service.UserService"/>
 
     <dubbo:reference id="weatherService" check="false" interface="com.zy.cn.service.WeatherService"/>
