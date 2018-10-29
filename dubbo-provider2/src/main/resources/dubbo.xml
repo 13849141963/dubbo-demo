@@ -50,7 +50,7 @@
 
 
     <!--使用 dubbo 协议实现定义好的 UserService 接口
-        loadbalance:是指定负载均衡的策略,也可以直接指定具体的方法上 <dubbo:method name=”queryById” loadbalance=”random”>
+        loadbalance:是指定负载均衡的策略,也可以直接指定具体的方法上 <dubbo:method name=”queryById”>
         timeout    :访问接口以及方法的超时时间
         retries    :dubbo的容灾模式 retries="2"当出现失败时重试其他服务器
         cluster    :默认的容灾模式
@@ -60,10 +60,10 @@
                                                 中的并发限制点，然后是服务的并发限制点
         owner      :服务配置所有者
         -->
-    <!--dubbo:service标签表示暴露一个服务,一个服务也可以多个协议暴露,一个服务也可以注册到多个注册中心-->
-    <dubbo:service owner="zongye" interface="com.zy.cn.service.WeatherService" ref="weatherService" loadbalance="roundrobin"  timeout="20000"/>
+    <!--dubbo:service标签表示暴露一个服务,一个服务也可以多个协议暴露,一个服务也可以注册到多个注册中心
+        dubbo支持客户端进行负载均衡-->
+    <dubbo:service owner="zongye" interface="com.zy.cn.service.WeatherService" ref="weatherService" timeout="20000"/>
     <!--<dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService"
-                   loadbalance="roundrobin"
                    cluster="failover"
                    timeout="20000"
                    retry="2"
@@ -72,13 +72,13 @@
 
     <!--<dubbo:service interface="com.zy.cn.service.WeatherService" ref="weatherService">
         &lt;!&ndash;指定固定的方法负载均衡&ndash;&gt;
-        <dubbo:method name="queryStaff" loadbalance="roundrobin"/>
+        <dubbo:method name="queryStaff" />
     </dubbo:service>-->
 
 
 
 
-    <dubbo:service interface="com.zy.cn.service.UserService" ref="userService" loadbalance="roundrobin"  timeout="20000"/>
+    <dubbo:service interface="com.zy.cn.service.UserService" ref="userService"   timeout="20000"/>
 
 
 
